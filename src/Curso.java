@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class Curso {
@@ -9,7 +11,17 @@ public class Curso {
 	private String nome;
 	private String instrutor;
 	private List<Aula> aulas = new ArrayList<Aula>();
+	
+	//nao possui ordenacao, nao aceita elementos duplicados,buscas rapidas - conjunto
 	private Set<Aluno> alunos = new HashSet<>();
+	
+	//mantem os elementos na ordem inserida, nao aceita elementos duplicados,buscas rapidas - conjunto
+	//private Set<Aluno> alunos = new LinkedHashSet<>();
+	
+
+	//ordena os seus elementos na hora da inserção. O criterio da ordenação depende e pode ser definido atraves de um Comparator.
+	//private Set<Aluno> alunos = new TreeSet<>();
+	
 
 	public String getNome() {
 		return nome;
@@ -51,5 +63,13 @@ public class Curso {
 
 	public boolean estaMatriculado(Aluno aluno) {
 		return this.alunos.contains(aluno);
+	}
+
+	public Aluno buscaMatriculado(int numero) {
+		for (Aluno aluno : alunos) {
+			if(aluno.getNumeroMatricula() == numero)
+				return aluno;
+		}
+		throw new NoSuchElementException("Matricula nao encontrada" + numero);
 	}
 }
