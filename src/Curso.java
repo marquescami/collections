@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -11,6 +12,7 @@ public class Curso {
 	private String nome;
 	private String instrutor;
 	private List<Aula> aulas = new ArrayList<Aula>();
+	private Map<Integer, Aluno> matriculaParaAluno =  new HashMap<>();
 	
 	//nao possui ordenacao, nao aceita elementos duplicados,buscas rapidas - conjunto
 	private Set<Aluno> alunos = new HashSet<>();
@@ -54,7 +56,12 @@ public class Curso {
 	}
 
 	public void matricula(Aluno aluno) {
+	    // adiciona no Set de alunos
 		this.alunos.add(aluno);
+		
+		//mapeia e associa aluno a matricula - relacao no Map
+		this.matriculaParaAluno.put(aluno.getNumeroMatricula(), aluno);
+		
 	}
 
 	public Set<Aluno> getAlunos() {
@@ -66,10 +73,9 @@ public class Curso {
 	}
 
 	public Aluno buscaMatriculado(int numero) {
-		for (Aluno aluno : alunos) {
-			if(aluno.getNumeroMatricula() == numero)
-				return aluno;
+		if(!matriculaParaAluno.containsKey(numero)) {
+			throw new NoSuchElementException();
 		}
-		throw new NoSuchElementException("Matricula nao encontrada" + numero);
+		return matriculaParaAluno.get(numero);
 	}
 }
